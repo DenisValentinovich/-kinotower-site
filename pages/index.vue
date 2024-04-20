@@ -7,24 +7,24 @@
   watch(category, (newCategory) => {
     filmsStore.addCategoryToParams(newCategory);
   });
-
-
   const country = ref(null);
   watch(country, (newCountry) => {
     filmsStore.addCountryToParams(newCountry);
   });
-
   const sortBy = ref('name');
   watch(sortBy, (newSortBy) => {
     filmsStore.addSortToParams(newSortBy);
   });
-
   const resetParams = () => {
     category.value = null;
     country.value = null;
     sortBy.value = 'name';
     filmsStore.fetchFilms();
   };
+
+
+
+
 
  filmsStore.fetchFilms();
  categoriesStore.fetchCategories();
@@ -62,6 +62,14 @@
       <button class="btn btn-outline-warning" @click="resetParams">Reset</button>
     </div>
   </div>
+
+
+<div class="d-flex justify-content-center" v-if="filmsStore.isLoading">
+  <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<template v-else>
 <div class="row row-cols-1 row-cols-md-3 g-4">
   <div class="col" v-for="film in filmsStore.films" :key="film.id">
     <div class="card h-100">
@@ -83,17 +91,28 @@
     </div>
   </div>
   </div>
+
+
 <!-- Pagination list films -->
 <nav aria-label="Page navigation" class="mt-4 d-flex justify-content-center">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link"
+        :class="{'disabled': filmsStore.page-1 == 0}"
+       href="#" aria-label="Previous"
+      @click.prevent="filmsStore.changePage(filmsStore.page-1)">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item" 
+      v-for="page in Math.ceil(filmsStore.total/filmsStore.size)"
+      :key="page">
+      <a 
+      class="page-link" 
+      :class="{'active': page == filmsStore.page}"
+      href="#"
+      @click.prevent="filmsStore.changePage(page)">{{ page }}</a>
+    </li>
     <li class="page-item">
       <a class="page-link" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
@@ -101,12 +120,9 @@
     </li>
   </ul>
 </nav>
-
+</template>
 </template>
 
-<script lang="ts" setup>
-
-</script>
 
 <style>
 
