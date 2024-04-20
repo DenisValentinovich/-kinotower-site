@@ -1,37 +1,65 @@
 <script lang="ts" setup>
  const filmsStore = useFilmsStore();
+ const categoriesStore = useCategoriesStore();
+ const countriesStore = useCountriesStore();
  
+ const category = ref(null);
+  watch(category, (newCategory) => {
+    filmsStore.addCategoryToParams(newCategory);
+  });
+
+
+  const country = ref(null);
+  watch(country, (newCountry) => {
+    filmsStore.addCountryToParams(newCountry);
+  });
+
+  const sortBy = ref('name');
+  watch(sortBy, (newSortBy) => {
+    filmsStore.addSortToParams(newSortBy);
+  });
+
+  const resetParams = () => {
+    category.value = null;
+    country.value = null;
+    sortBy.value = 'name';
+    filmsStore.fetchFilms();
+  };
+
  filmsStore.fetchFilms();
+ categoriesStore.fetchCategories();
 </script>
 
 <template>
   <div class="row my-4">
     <div class="col-md-4">
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Select genre...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+      <select class="form-select" v-model="category" >
+        <option selected :value="null">Select genre...</option>
+        <option 
+          v-for="category in categoriesStore.categories" 
+          :key="category.id" 
+          :value="category.id"
+          >{{ category.name }} ({{ category.filmCount }})</option>
       </select>
     </div>
     <div class="col-md-4">
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Select country...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+      <select class="form-select" v-model="country">
+        <option selected :value="null">Select country...</option>
+        <option 
+        v-for="country in countriesStore.countries"
+        :key="country.id"
+        :value="country.id">{{ country.name }}</option>
       </select>
     </div>
     <div class="col-md-3">
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Sort by...</option>
-        <option value="name">Name</option>
-        <option value="year">Year</option>
-        <option value="rating">Rating</option>
+      <select class="form-select" v-model="sortBy">
+        <option value="name">Sort by Name</option>
+        <option value="year">Sort by Year</option>
+        <option value="rating">Sort by Rating</option>
       </select>
     </div>
     <div class="col-md-1">
-      <button class="btn btn-outline-warning">Reset</button>
+      <button class="btn btn-outline-warning" @click="resetParams">Reset</button>
     </div>
   </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -54,105 +82,7 @@
       </div>
     </div>
   </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
   </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card h-100">
-      <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/c73a777d-538d-41a7-ad0c-7947713e5c29/1920x" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Троя</h5>
-        <p class="card-text">4.5</p>
-        <p class="card-text">180 мин.</p>
-        <p class="card-text">Драма, Приключния, Исторический</p>
-      </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- Pagination list films -->
 <nav aria-label="Page navigation" class="mt-4 d-flex justify-content-center">
   <ul class="pagination">
