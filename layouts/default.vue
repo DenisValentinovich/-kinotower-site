@@ -1,12 +1,21 @@
+<script setup lang="ts">
+    const authStore = useAuthStore();
+</script>
 <template>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
             <img src="/logo.svg" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">inoTower
             </a>
-            <div class="d-flex">
-                <button class="btn btn-outline-primary me-3">SignUp</button>
-                <button class="btn btn-outline-success">SignIn</button>
+            <div class="d-flex align-items-center">
+                <template v-if="!authStore.authData">
+                    <button @click="$router.push('/signup')" class="btn btn-outline-primary me-3">SignUp</button>
+                    <button @click="$router.push('/signin')" class="btn btn-outline-success">SignIn</button>  
+                </template>
+                <template v-else>
+                    <a href="#" @click.prevent="$router.push('/profile')" class="link-offset-1 pe-2">{{ authStore.authData.fio }}</a>
+                    <button @click="authStore.signout()"  class="btn btn-outline-primary me-3">SignOut</button>
+                </template>
             </div>
         </div>
     </nav>
