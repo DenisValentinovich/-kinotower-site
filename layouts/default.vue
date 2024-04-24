@@ -4,9 +4,7 @@
 <template>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-            <img src="/logo.svg" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">inoTower
-            </a>
+            <NuxtLink to="/" class="navbar-brand"><img src="/logo.svg" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">inoTower</NuxtLink>
             <div class="d-flex align-items-center">
                 <template v-if="!authStore.authData">
                     <button @click="$router.push('/signup')" class="btn btn-outline-primary me-3">SignUp</button>

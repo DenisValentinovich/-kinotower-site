@@ -86,7 +86,7 @@
         <p class="card-text" v-else>Нет жанров у этого шедевра</p>
       </div>
       <div class="card-footer text-end">
-        <button class="btn btn-outline-primary">View</button>
+        <button @click="$router.push('/film/'+film.id)" class="btn btn-outline-primary">View</button>
       </div>
     </div>
   </div>
@@ -121,11 +121,7 @@
   </ul>
 </nav>
 </template>
-<div class="d-flex justify-content-center" v-else>
-  <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
+
 </template>
 
 

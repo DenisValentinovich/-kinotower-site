@@ -6,7 +6,7 @@ export const useFilmsStore = defineStore('films', () => {
   const page = ref(1);
   const total = ref(0);
   const isLoading = ref(true);
-  const size = 2;
+  const size = 10;
 
   const params: {
     category:number|null,
